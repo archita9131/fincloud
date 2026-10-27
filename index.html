@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>FinCloud Dashboard</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,Arial,sans-serif;background:#f7f8fc;color:#20253a;min-height:100vh}
+a{text-decoration:none;color:inherit}
+button,input,select{font:inherit}
+.app{display:flex;min-height:100vh}
+.sidebar{width:245px;background:linear-gradient(180deg,#21194d 0%,#34227c 55%,#5130a8 100%);color:#fff;padding:25px 16px;position:fixed;left:0;top:0;bottom:0}
+.brand{display:flex;align-items:center;gap:10px;font-size:23px;font-weight:800;padding:4px 12px 34px}
+.brand-icon{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#9a6cff,#e36cff);display:grid;place-items:center;box-shadow:0 8px 20px #0003}
+.side-label{font-size:10px;text-transform:uppercase;letter-spacing:1.4px;color:#c9c0ee;padding:0 12px;margin:12px 0 10px}
+.side-nav{display:grid;gap:6px}
+.side-nav a,.logout{display:flex;align-items:center;gap:12px;padding:12px;border-radius:11px;color:#dcd7f4;font-size:13px;font-weight:600;border:0;background:transparent;cursor:pointer}
+.side-nav a:hover,.side-nav a.active{background:#ffffff18;color:#fff}
+.side-icon{width:20px;text-align:center;font-size:16px}
+.sidebar-bottom{position:absolute;bottom:22px;left:16px;right:16px}
+.profile-mini{display:flex;gap:10px;align-items:center;background:#ffffff12;border:1px solid #ffffff18;padding:11px;border-radius:14px;margin-bottom:9px}
+.avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#ffd66b,#ff7b9d);display:grid;place-items:center;color:#3c245f;font-weight:800}
+.profile-mini b{font-size:12px;display:block;max-width:130px;overflow:hidden;text-overflow:ellipsis}
+.profile-mini span{font-size:10px;color:#c9c0ee}
+.logout{width:100%}.logout:hover{background:#ffffff15}
+.main{margin-left:245px;width:calc(100% - 245px);padding:28px 38px 50px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+.mobile-brand{display:none}.top-actions{display:flex;gap:10px;align-items:center}
+.icon-btn{width:40px;height:40px;border:1px solid #e6e8f1;background:#fff;border-radius:12px;cursor:pointer}
+.top-user{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid #e8e9f1;padding:6px 12px 6px 6px;border-radius:30px;font-size:12px;font-weight:600}
+h1{font-size:29px;letter-spacing:-.8px}.sub{color:#8990a5;font-size:13px;margin-top:6px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:20px}
+.card{border-radius:20px;padding:23px;min-height:155px;position:relative;overflow:hidden;color:#fff;box-shadow:0 14px 30px #25204a12}
+.card:after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;right:-55px;bottom:-80px;background:#ffffff15}
+.card-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;opacity:.92}
+.card-icon{width:38px;height:38px;border-radius:11px;background:#ffffff1e;display:grid;place-items:center;font-size:17px}
+.card h2{font-size:29px;margin:17px 0 6px}.card small{font-size:11px;opacity:.82}
+.purple{background:linear-gradient(135deg,#6041dc,#9863ff)}.green{background:linear-gradient(135deg,#09a878,#43d9a3)}.orange{background:linear-gradient(135deg,#ef7c36,#ffb04f)}
+.grid{display:grid;grid-template-columns:1.5fr .9fr;gap:20px}
+.panel{background:#fff;border:1px solid #e9eaf1;border-radius:20px;padding:22px;box-shadow:0 8px 25px #20253a08}
+.panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.panel-head h2{font-size:16px}.muted{color:#8c93a7;font-size:11px}
+.chart{height:225px;display:flex;align-items:end;gap:14px;padding:20px 10px 5px;background:linear-gradient(#fff,#faf9ff);border-radius:14px}
+.bar-wrap{height:100%;flex:1;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:7px}
+.bar{width:70%;max-width:35px;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,#9a68ff,#6845e9);min-height:8px}
+.bar.exp{background:linear-gradient(180deg,#ff9b76,#ef5b6f)}
+.bar-label{font-size:9px;color:#9ba0b0}
+.legend{display:flex;gap:15px;font-size:10px;color:#81889c;margin-top:8px}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;background:#7651ee}.dot.orange{background:#f17170}
+.overview-row{display:flex;align-items:center;gap:13px;padding:13px 0;border-bottom:1px solid #f0f1f5}.overview-row:last-child{border:0}
+.round-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center}.round-icon.i{background:#e4faf2;color:#0aa977}.round-icon.e{background:#ffebee;color:#eb5c72}
+.overview-info{flex:1}.overview-info b{font-size:12px;display:block}.overview-info span{font-size:10px;color:#9298aa}.overview-row strong{font-size:12px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}.action{background:#fff;border:1px solid #e8e9f0;padding:17px;border-radius:16px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:10px;transition:.2s}.action:hover{transform:translateY(-2px);border-color:#b9a9ff;box-shadow:0 8px 20px #5c42cc12}.action span{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:#eee9ff;color:#6544e4;font-size:16px}
+.bank{margin-top:20px;background:linear-gradient(110deg,#171332,#4a2b9b);border-radius:20px;padding:23px 25px;color:#fff;display:flex;justify-content:space-between;align-items:center;box-shadow:0 15px 35px #34206b25}.bank p{color:#cbc5e8;font-size:11px;margin-top:6px}.bank button{border:0;background:#fff;color:#5634b2;padding:11px 17px;border-radius:11px;font-weight:800;cursor:pointer}
+.form-panel{max-width:720px;background:#fff;border:1px solid #e8e9f1;border-radius:20px;padding:28px;box-shadow:0 10px 30px #20253a08}.form{display:grid;gap:8px}.form label{font-size:12px;font-weight:700;color:#596077;margin-top:8px}.form input,.form select{border:1px solid #e0e2eb;background:#fbfcff;border-radius:11px;padding:13px;outline:0}.form input:focus,.form select:focus{border-color:#7753e8;box-shadow:0 0 0 4px #7753e812}.primary{margin-top:12px;border:0;border-radius:11px;padding:13px;background:linear-gradient(135deg,#6845e8,#a06bff);color:#fff;font-weight:800;cursor:pointer}
+.table-panel{background:#fff;border:1px solid #e8e9f1;border-radius:20px;padding:18px;overflow:auto;box-shadow:0 10px 30px #20253a08}table{width:100%;border-collapse:collapse}th{font-size:10px;color:#8b92a6;text-transform:uppercase;text-align:left;padding:13px;border-bottom:1px solid #eceef4}td{font-size:12px;padding:15px 13px;border-bottom:1px solid #f0f1f5}.badge{font-size:10px;font-weight:800;padding:6px 9px;border-radius:20px}.badge.income{background:#e3faf2;color:#0aa977}.badge.expense{background:#ffeaee;color:#e7556c}.income-text{color:#0aa977;font-weight:800}.expense-text{color:#e7556c;font-weight:800}.delete{border:0;background:#fff0f3;color:#e7556c;border-radius:8px;padding:7px 9px;font-size:10px;font-weight:700;cursor:pointer}.empty{text-align:center;color:#9298aa;padding:35px}
+.auth-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:25px;background:radial-gradient(circle at 10% 10%,#9f6dff80,transparent 30%),radial-gradient(circle at 90% 90%,#ff70cc70,transparent 32%),linear-gradient(135deg,#38217e,#713fc2 50%,#bd4db7)}
+.auth-box{width:940px;max-width:100%;min-height:580px;display:grid;grid-template-columns:1.08fr .92fr;background:#ffffff16;border:1px solid #ffffff35;border-radius:28px;overflow:hidden;box-shadow:0 35px 90px #1d0d4655;backdrop-filter:blur(18px)}
+.auth-left{padding:55px;color:#fff;display:flex;flex-direction:column;justify-content:center}.auth-left .brand{padding:0;color:#fff}.auth-left h1{font-size:43px;line-height:1.05;margin:55px 0 16px}.auth-left p{color:#e8ddff;line-height:1.7;font-size:13px}.checks{display:grid;gap:12px;margin-top:27px;font-size:12px;color:#f0eaff}.auth-right{background:#fff;padding:50px 45px;display:flex;flex-direction:column;justify-content:center}.auth-right h2{font-size:27px;margin-bottom:7px}.auth-right .hint{font-size:12px;color:#8990a5;margin-bottom:20px}.tabs{display:grid;grid-template-columns:1fr 1fr;background:#f0eff7;padding:5px;border-radius:11px;margin-bottom:22px}.tabs button{border:0;background:transparent;padding:10px;border-radius:8px;color:#777e92;font-weight:700;cursor:pointer}.tabs button.active{background:#fff;color:#6544e4;box-shadow:0 3px 10px #29204a12}.auth-form{display:grid;gap:8px}.auth-form label{font-size:11px;font-weight:700;color:#596077;margin-top:7px}.auth-form input{border:1px solid #dfe2ea;padding:13px;border-radius:10px;outline:0}.auth-form input:focus{border-color:#7954e8}.auth-btn{margin-top:10px;background:linear-gradient(135deg,#6744e5,#9a62ff);color:#fff;border:0;border-radius:10px;padding:13px;font-weight:800;cursor:pointer}.forgot{border:0;background:transparent;color:#6845e8;font-size:11px;cursor:pointer}.message{text-align:center;min-height:18px;font-size:11px}.error{color:#df4c65}.success{color:#0aa977}
+@media(max-width:900px){.sidebar{width:210px}.main{margin-left:210px;width:calc(100% - 210px);padding:25px}.cards{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
+@media(max-width:680px){.sidebar{display:none}.main{margin-left:0;width:100%;padding:20px}.mobile-brand{display:block;font-weight:800;color:#6845e8}.topbar{margin-bottom:22px}.top-user{display:none}.auth-box{grid-template-columns:1fr}.auth-left{display:none}.auth-right{padding:35px 25px}.bank{align-items:flex-start;gap:18px;flex-direction:column}}
+</style>
+</head>
+<body><div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-icon">💰</div>FinCloud</div>
+  <div class="side-label">MAIN MENU</div>
+  <div class="side-nav">
+    <a href="index.html" class="active"><span class="side-icon">⌂</span>Dashboard</a>
+    <a href="income.html"><span class="side-icon">↗</span>Income</a>
+    <a href="expenses.html"><span class="side-icon">↘</span>Expenses</a>
+    <a href="transactions.html"><span class="side-icon">▤</span>Transactions</a>
+  </div>
+  <div class="side-label">ACCOUNT</div>
+  <div class="side-nav"><a href="#bank"><span class="side-icon">🏦</span>Bank Account</a></div>
+  <div class="sidebar-bottom">
+    <div class="profile-mini"><div class="avatar">U</div><div><b class="user-name">User</b><span class="user-email">Account</span></div></div>
+    <button class="logout logout-btn"><span class="side-icon">⇥</span> Logout</button>
+  </div>
+</aside>
+<main class="main">
+<div class="topbar"><div><div class="mobile-brand">💰 FinCloud</div></div><div class="top-actions"><button class="icon-btn">🔔</button><div class="top-user"><div class="avatar" style="width:28px;height:28px">U</div><span class="user-name">User</span></div></div></div>
+
+<div id="userBroadcastContainer"></div>
+<div style="margin-bottom:24px"><h1>Good to see you, <span class="user-name">User</span> 👋</h1><p class="sub">Here’s what’s happening with your money today.</p></div>
+<section class="cards">
+<div class="card purple"><div class="card-top"><span>💎 TOTAL BALANCE</span><div class="card-icon">₹</div></div><h2 id="balance">₹0</h2><small id="balanceStatus">Your balance</small></div>
+<div class="card green"><div class="card-top"><span>↗ TOTAL INCOME</span><div class="card-icon">＋</div></div><h2 id="totalIncome">₹0</h2><small>Money received</small></div>
+<div class="card orange"><div class="card-top"><span>↘ TOTAL EXPENSES</span><div class="card-icon">−</div></div><h2 id="totalExpense">₹0</h2><small>Money spent</small></div>
+</section>
+<div class="grid">
+<section class="panel"><div class="panel-head"><h2>Spending Overview</h2><span class="muted">Your activity</span></div>
+<div class="chart"><div class="bar-wrap"><div class="bar" style="height:45%"></div><span class="bar-label">Mon</span></div><div class="bar-wrap"><div class="bar" style="height:65%"></div><span class="bar-label">Tue</span></div><div class="bar-wrap"><div class="bar exp" style="height:35%"></div><span class="bar-label">Wed</span></div><div class="bar-wrap"><div class="bar" style="height:80%"></div><span class="bar-label">Thu</span></div><div class="bar-wrap"><div class="bar exp" style="height:50%"></div><span class="bar-label">Fri</span></div><div class="bar-wrap"><div class="bar" style="height:68%"></div><span class="bar-label">Sat</span></div><div class="bar-wrap"><div class="bar exp" style="height:42%"></div><span class="bar-label">Sun</span></div></div>
+<div class="legend"><span><i class="dot"></i>Income</span><span><i class="dot orange"></i>Expenses</span></div></section>
+<section class="panel"><div class="panel-head"><h2>Recent Transactions</h2><a class="muted" href="transactions.html">View all →</a></div><div id="recentList"><div class="empty">Loading...</div></div></section>
+</div>
+<div class="actions"><a class="action" href="income.html"><span>＋</span>Add Income</a><a class="action" href="expenses.html"><span>−</span>Add Expense</a></div>
+<section class="bank" id="bank"><div><h2>🏦 <span id="bankName">No bank account added</span></h2><p id="bankNumber">Add a demo bank account</p><p>Demo/sandbox account for presentation. No real bank connection or banking credentials are used.</p></div><div style="text-align:right"><strong id="bankBalance" style="display:block;font-size:22px;margin-bottom:10px">₹0</strong><button type="button" id="openBankBtn">＋ Add Bank Account</button></div></section>
+<div id="bankModal" style="display:none;position:fixed;inset:0;background:#17133299;z-index:50;align-items:center;justify-content:center;padding:20px">
+  <div style="width:430px;max-width:100%;background:#fff;border-radius:20px;padding:25px;box-shadow:0 20px 60px #0004">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px"><h2>Add Bank Account</h2><button type="button" id="closeBankBtn" style="border:0;background:#f1eff8;border-radius:8px;padding:6px 10px;cursor:pointer">✕</button></div>
+    <p style="font-size:11px;color:#7f8497;margin-bottom:15px">Presentation demo only. Do not enter real bank passwords, OTPs or UPI PINs.</p>
+    <form id="bankForm" class="form">
+      <label for="bankNameInput">Bank Name</label><input id="bankNameInput" placeholder="e.g. State Bank of India" required>
+      <label for="bankNumberInput">Account Number</label><input id="bankNumberInput" inputmode="numeric" placeholder="Enter demo account number" required>
+      <label for="bankOpeningBalance">Opening Balance</label><input id="bankOpeningBalance" type="number" min="0" step="0.01" placeholder="e.g. 25000" required>
+      <button class="primary" type="submit">Save Bank Account</button>
+    </form>
+  </div>
+</div>
+</main></div><script type="module" src="script.js"></script></body></html>

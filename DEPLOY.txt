@@ -1,0 +1,14 @@
+FINCLOUD - DEPLOY (hosting + Firestore rules)
+
+One-time:
+  npm install -g firebase-tools
+  firebase login
+
+Every deploy (from this folder):
+  firebase deploy --only hosting,firestore
+
+IMPORTANT: deploy "firestore" too, not just hosting. The new loginEvents
+rules are required or login tracking is silently rejected.
+
+Live URL: https://fincloud-30e77.web.app
+Admin:    https://fincloud-30e77.web.app/admin   (admin@fincloud.com)

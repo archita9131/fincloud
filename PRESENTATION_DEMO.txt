@@ -1,0 +1,13 @@
+FINCLOUD - PRESENTATION DEMO
+
+1. Open login.html.
+2. Sign up with your name, email and password.
+3. After login, your name appears on the dashboard.
+4. Click Add Bank Account and enter a DEMO bank name, account number and opening balance.
+5. The dashboard shows the bank balance and Total Balance.
+6. Add Income and Add Expense. The dashboard updates automatically:
+   Total Balance = Bank Opening Balance + Income - Expenses
+7. Open Transactions to see and delete transactions.
+8. Click Logout to return to login.html.
+
+IMPORTANT: The bank feature is a presentation sandbox. It does NOT connect to a real bank. Never enter a real bank password, OTP, UPI PIN or banking credentials.
